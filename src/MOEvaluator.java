@@ -32,17 +32,18 @@ public class MOEvaluator implements Evaluator<String> {
 
 	}
 
-	private int evaluateReqScoreFitness(String phenotype) {
-		int score = 0;
+	private double evaluateReqScoreFitness(String phenotype) {
+		double score = 0;
 		char[] pheno = phenotype.toCharArray();
+		ArrayList<Chromosome> customers = r.getCust();
 		for (int i = 0; i < pheno.length; i++) {
 			if (pheno[i] == '1') {
-				ArrayList<Chromosome> customers = r.getCust();
+			
 				for (int j = 0; j < customers.size(); j++) {
-					int customerValue = customers.get(j).getCustomerProfit();
-					int customerReqValue = 0;
+					double customerValue = ((double) customers.get(j).getCustomerProfit() / (double)customers.size());
+					double customerReqValue = 0;
 					if (customers.get(j).getCustomerRequirements().contains(i)) {
-					customerReqValue= customers.get(j).getCustomerRequirements().indexOf(i)+1; //Adding plus oneto make important 1 instead of 0
+					customerReqValue= customers.get(j).getCustomerRequirements().indexOf(i)+1.0; //Adding plus oneto make important 1 instead of 0
 					}
 					else {
 						customerReqValue = 0;
