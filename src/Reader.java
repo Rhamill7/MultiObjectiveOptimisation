@@ -3,28 +3,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
-
 public class Reader {
-	
+
 	ArrayList<Integer> requirements = new ArrayList<Integer>();
 	ArrayList<Chromosome> customers = new ArrayList<Chromosome>();
 
-	public ArrayList<Integer> req(){
-		return requirements;
-		
+	public int getReq(int position) {
+		return requirements.get(position);
+
 	}
-	
-	public ArrayList<Chromosome> cust(){
+
+	public ArrayList<Chromosome> getCust() {
 		return customers;
-		
+
 	}
-	
+
 	public void fileScanner() {
-		
+
 		try {
 			// String title ="";
-		
+
 			int i = 1;
 			Scanner scanner = new Scanner(new FileReader("nrp1.txt"));
 			while (scanner.hasNextInt()) {
@@ -66,6 +64,6 @@ public class Reader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 }

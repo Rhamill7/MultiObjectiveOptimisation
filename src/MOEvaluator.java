@@ -1,13 +1,17 @@
 
 import org.opt4j.core.problem.Evaluator;
+
+import java.util.ArrayList;
+
 import org.opt4j.core.Objective.Sign;
 import org.opt4j.core.Objectives;
 
 public class MOEvaluator implements Evaluator<String> {
+	Reader r = new Reader();
 
 	@Override
 	public Objectives evaluate(String phenotype) {
-		Reader r = new Reader();
+
 		r.fileScanner();
 		Objectives objectives = new Objectives();
 		objectives.add("Requirement Cost", Sign.MIN, evaluateReqCostFitness(phenotype));
@@ -16,14 +20,38 @@ public class MOEvaluator implements Evaluator<String> {
 	}
 
 	private int evaluateReqCostFitness(String phenotype) {
+		int cost = 0;
 		char[] pheno = phenotype.toCharArray();
-		for (int i =0)
-		return 0;
+		for (int i = 0; i < pheno.length; i++) {
+			if (pheno[i] == '1') {
+				cost += r.getReq(i);
+			}
+		}
+		// Possibly need to add cost ratio multiplication here
+		return cost;
 
 	}
-	
-	private int evaluateReqScoreFitness(String phenotype){
-		return 0;
+
+	private int evaluateReqScoreFitness(String phenotype) {
+		int score = 0;
+		char[] pheno = phenotype.toCharArray();
+		for (int i = 0; i < pheno.length; i++) {
+			if (pheno[i] == '1') {
+				ArrayList<Chromosome> customers = r.getCust();
+				for (int j = 0; j < customers.size(); j++) {
+					int customerValue = customers.get(j).getCustomerProfit();
+					int customerReqValue = 0;
+					if (customers.get(j).getCustomerRequirements().contains(i)) {
+					customerReqValue= customers.get(j).getCustomerRequirements().indexOf(i)+1; //Adding plus oneto make important 1 instead of 0
+					}
+					else {
+						customerReqValue = 0;
+					}
+					score += (customerValue * customerReqValue);
+				}
+			}
+		}
+		return score;
 	}
 
 }
