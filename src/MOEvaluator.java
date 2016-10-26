@@ -41,14 +41,14 @@ public class MOEvaluator implements Evaluator<String> {
 			
 				for (int j = 0; j < customers.size(); j++) {
 					double customerValue = ((double) customers.get(j).getCustomerProfit() / (double)customers.size());
-					double customerReqValue = 0;
+					int customerReqValue = 0;
 					if (customers.get(j).getCustomerRequirements().contains(i)) {
-					customerReqValue= customers.get(j).getCustomerRequirements().indexOf(i)+1.0; //Adding plus oneto make important 1 instead of 0
+					customerReqValue= customers.get(j).getCustomerRequirements().indexOf(i)+1; //Adding plus oneto make important 1 instead of 0
 					}
 					else {
 						customerReqValue = 0;
 					}
-					score += (customerValue * customerReqValue);
+					score += (customerValue * (double) customerReqValue);
 				}
 			}
 		}

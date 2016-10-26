@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FilePermission;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,9 +24,14 @@ public class Reader {
 
 		try {
 			// String title ="";
-
+		//	FilePermission permission = new FilePermission("C:/Users/Robbie/Documents/Classic-nrp/nrp1.txt", "read");
 			int i = 1;
-			Scanner scanner = new Scanner(new FileReader("nrp1.txt"));
+			File infile = new File("C:/Users/Robbie/Documents/Classic-nrp/nrp1.txt");
+			if (!infile.canRead()) {
+				   infile.setReadable(true);
+				}
+			Scanner scanner = new Scanner(infile);
+			//		+ "nrp1.txt"));
 			while (scanner.hasNextInt()) {
 				// System.out.println(i);
 				// scanner.nextLine();
@@ -48,7 +55,7 @@ public class Reader {
 					for (int j = 0; j < requestNo; j++) {
 						reqs.add(miniScan2.nextInt());
 					}
-					System.out.println(custProf + " " + requestNo + " " + reqs);
+					//System.out.println(custProf + " " + requestNo + " " + reqs);
 					customers.add(new Chromosome(custProf, requestNo, reqs));
 
 				} else {
