@@ -9,29 +9,22 @@ public class Reader {
 
 	ArrayList<Integer> requirements = new ArrayList<Integer>();
 	ArrayList<Chromosome> customers = new ArrayList<Chromosome>();
+	ArrayList<Double> scores = new ArrayList<Double>();
 
-	public int getReq(int position) {
-		return requirements.get(position);
-
-	}
-
-	public ArrayList<Chromosome> getCust() {
-		return customers;
-
-	}
-
-	public void fileScanner() {
-
+	public Reader(){
 		try {
+			System.out.println("HELLO");
 			// String title ="";
-		//	FilePermission permission = new FilePermission("C:/Users/Robbie/Documents/Classic-nrp/nrp1.txt", "read");
+			// FilePermission permission = new
+			// FilePermission("C:/Users/Robbie/Documents/Classic-nrp/nrp1.txt",
+			// "read");
 			int i = 1;
 			File infile = new File("C:/Users/Robbie/Documents/Classic-nrp/nrp1.txt");
 			if (!infile.canRead()) {
-				   infile.setReadable(true);
-				}
+				infile.setReadable(true);
+			}
 			Scanner scanner = new Scanner(infile);
-			//		+ "nrp1.txt"));
+			// + "nrp1.txt"));
 			while (scanner.hasNextInt()) {
 				// System.out.println(i);
 				// scanner.nextLine();
@@ -55,7 +48,8 @@ public class Reader {
 					for (int j = 0; j < requestNo; j++) {
 						reqs.add(miniScan2.nextInt());
 					}
-					//System.out.println(custProf + " " + requestNo + " " + reqs);
+					// System.out.println(custProf + " " + requestNo + " " +
+					// reqs);
 					customers.add(new Chromosome(custProf, requestNo, reqs));
 
 				} else {
@@ -65,12 +59,46 @@ public class Reader {
 				i++;
 
 			}
-		} catch (
 
-		IOException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		// working out score
+
+		for (int l = 0; l < requirements.size(); l++) {
+			double score = 0.0;
+			for (int m = 0; m < customers.size(); m++) {
+				double customerValue = ((double) customers.get(m).getCustomerProfit() / (double) customers.size());
+				int customerReqValue = 0;
+				if (customers.get(m).getCustomerRequirements().contains(l)) {
+					customerReqValue = customers.get(m).getCustomerRequirements().indexOf(l) + 1;
+				} else {
+					customerReqValue = 0;
+				}
+				score += (customerValue * (double) customerReqValue);
+			}
+			scores.add(score);
+		}
+	}
+	
+	public int getReq(int position) {
+		return requirements.get(position);
+
+	}
+
+	public double getScore(int position) {
+		return scores.get(position);
+	}
+
+	public ArrayList<Chromosome> getCust() {
+		return customers;
+
+	}
+
+	public void fileScanner() {
+
+		
 
 	}
 }

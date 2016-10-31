@@ -12,7 +12,7 @@ public class MOEvaluator implements Evaluator<String> {
 	@Override
 	public Objectives evaluate(String phenotype) {
 
-		r.fileScanner();
+	
 		Objectives objectives = new Objectives();
 		objectives.add("Requirement Cost", Sign.MIN, evaluateReqCostFitness(phenotype));
 		objectives.add("Requirement Score", Sign.MAX, evaluateReqScoreFitness(phenotype));
@@ -33,26 +33,14 @@ public class MOEvaluator implements Evaluator<String> {
 	}
 
 	private double evaluateReqScoreFitness(String phenotype) {
-		double score = 0;
+		double score = 0.0;
 		char[] pheno = phenotype.toCharArray();
-		ArrayList<Chromosome> customers = r.getCust();
 		for (int i = 0; i < pheno.length; i++) {
 			if (pheno[i] == '1') {
-			
-				for (int j = 0; j < customers.size(); j++) {
-					double customerValue = ((double) customers.get(j).getCustomerProfit() / (double)customers.size());
-					int customerReqValue = 0;
-					if (customers.get(j).getCustomerRequirements().contains(i)) {
-					customerReqValue= customers.get(j).getCustomerRequirements().indexOf(i)+1; //Adding plus oneto make important 1 instead of 0
-					}
-					else {
-						customerReqValue = 0;
-					}
-					score += (customerValue * (double) customerReqValue);
+					score += r.getScore(i);
 				}
-			}
-		}
-		return score;
-	}
+			
+		}return score;
+}
 
 }
