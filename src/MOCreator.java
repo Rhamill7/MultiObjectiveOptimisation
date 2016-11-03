@@ -7,11 +7,8 @@ public class MOCreator implements Creator<BooleanGenotype> {
 
 	public BooleanGenotype create() {
 		BooleanGenotype genotype = new BooleanGenotype();
-		
-		genotype.init(random, 140); // Better to use injection
+		genotype.init(random, 3502); //140 // number of requirements
 		return genotype;
 	}
-	
-	
 
 }

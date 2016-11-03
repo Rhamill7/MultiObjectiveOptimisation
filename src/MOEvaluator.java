@@ -12,10 +12,10 @@ public class MOEvaluator implements Evaluator<String> {
 	@Override
 	public Objectives evaluate(String phenotype) {
 
-	
 		Objectives objectives = new Objectives();
 		objectives.add("Requirement Cost", Sign.MIN, evaluateReqCostFitness(phenotype));
 		objectives.add("Requirement Score", Sign.MAX, evaluateReqScoreFitness(phenotype));
+	//	objectives.add("Requirement Score & Cost", Sign.MAX, evaluateSingleObjective(phenotype));
 		return objectives;
 	}
 
@@ -27,7 +27,6 @@ public class MOEvaluator implements Evaluator<String> {
 				cost += r.getReq(i);
 			}
 		}
-		// Possibly need to add cost ratio multiplication here
 		return cost;
 
 	}
@@ -37,10 +36,20 @@ public class MOEvaluator implements Evaluator<String> {
 		char[] pheno = phenotype.toCharArray();
 		for (int i = 0; i < pheno.length; i++) {
 			if (pheno[i] == '1') {
-					score += r.getScore(i);
-				}
-			
-		}return score;
-}
+				score += r.getScore(i);
+			}
+		}
+		return score;
+	}
+	
+	public double evaluateSingleObjective(String phenotype){
+		double weight = 0.5;
+		double fOne = evaluateReqCostFitness(phenotype);
+		double fTwo = evaluateReqScoreFitness(phenotype);
+		double fX = weight * fOne + (1.0 - weight) * fTwo;
+			//	F(x) = w * f1(x) + (1 - w) * f2(x)
+		
+		return fX;
+	}
 
 }
