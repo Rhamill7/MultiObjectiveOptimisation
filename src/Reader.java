@@ -10,7 +10,8 @@ public class Reader {
 	ArrayList<Integer> requirements = new ArrayList<Integer>();
 	ArrayList<Chromosome> customers = new ArrayList<Chromosome>();
 	ArrayList<Double> scores = new ArrayList<Double>();
-	private int budget = 0;
+	private double budget = 0.0;
+	private int totalProfit = 0;
 
 	public Reader() {
 		try {
@@ -26,9 +27,9 @@ public class Reader {
 			while (scanner.hasNextInt()) {
 				// System.out.println(i);
 				// scanner.nextLine();
-				if (i > 1 && i < 9) {
+				if (i == 3) {
 					String line = scanner.nextLine();
-					// System.out.println(line);
+					// System.out.println(" New Line " + line);
 					Scanner miniScan = new Scanner(line);
 					while (miniScan.hasNextInt()) {
 						requirements.add(miniScan.nextInt());
@@ -41,7 +42,7 @@ public class Reader {
 					String line = scanner.nextLine();
 					Scanner miniScan2 = new Scanner(line);
 					int custProf = miniScan2.nextInt();
-
+					totalProfit += custProf;
 					int requestNo = miniScan2.nextInt();
 					ArrayList<Integer> reqs = new ArrayList<Integer>();
 					for (int j = 0; j < requestNo; j++) {
@@ -56,70 +57,63 @@ public class Reader {
 				}
 
 				i++;
+				// System.out.println("Total profit" + totalProfit);
 
 			}
-			/*
-			 * ===============================Scanning classic
-			 * nrp1========================
-			 */
-			// // String title ="";
-			// // FilePermission permission = new
-			// //
-			// FilePermission("C:/Users/Robbie/Documents/Classic-nrp/nrp1.txt",
-			// // "read");
-			// int i = 1;
-			// File infile = new
-			// File("C:/Users/Robbie/Documents/Classic-nrp/nrp1.txt");
-			// if (!infile.canRead()) {
-			// infile.setReadable(true);
-			// }
-			// Scanner scanner = new Scanner(infile);
-			// // + "nrp1.txt"));
-			// while (scanner.hasNextInt()) {
-			// // System.out.println(i);
-			// // scanner.nextLine();
-			// if (i == 3 || i == 5 || i == 7) {
-			// String line = scanner.nextLine();
-			// Scanner miniScan = new Scanner(line);
-			// while (miniScan.hasNextInt()) {
-			// requirements.add(miniScan.nextInt());
-			// }
-			// miniScan.close();
-			// // System.out.println(requirements);
-			// }
+
+			// ===============================Scanning classic
+			// nrp1====================//
 			//
-			// else if (i == 107 || i > 107) {
-			// String line = scanner.nextLine();
-			// Scanner miniScan2 = new Scanner(line);
-			// int custProf = miniScan2.nextInt();
 			//
-			// int requestNo = miniScan2.nextInt();
-			// ArrayList<Integer> reqs = new ArrayList<Integer>();
-			// for (int j = 0; j < requestNo; j++) {
-			// reqs.add(miniScan2.nextInt());
-			// }
-			// // System.out.println(custProf + " " + requestNo + " " +
-			// // reqs);
-			// customers.add(new Chromosome(custProf, requestNo, reqs));
-			//
-			// } else {
-			// scanner.nextLine();
-			// }
-			//
-			// i++;
-			//
-			// }
+//			 int i = 1;
+//			 File infile = new
+//			 File("C:/Users/Robbie/Documents/Classic-nrp/nrp1.txt");
+//			 if (!infile.canRead()) {
+//			 infile.setReadable(true);
+//			 }
+//			 Scanner scanner = new Scanner(infile);
+//			 while (scanner.hasNextInt()) {
+//			 // System.out.println(i);
+//			 if (i == 3 || i == 5 || i == 7) {
+//			 String line = scanner.nextLine();
+//			 Scanner miniScan = new Scanner(line);
+//			 while (miniScan.hasNextInt()) {
+//			 requirements.add(miniScan.nextInt());
+//			 
+//			 }
+//			 miniScan.close();
+//			 }
+//			
+//			 else if (i == 107 || i > 107) {
+//			 String line = scanner.nextLine();
+//			 Scanner miniScan2 = new Scanner(line);
+//			 int custProf = miniScan2.nextInt();
+//			 totalProfit += custProf;
+//			 int requestNo = miniScan2.nextInt();
+//			 ArrayList<Integer> reqs = new ArrayList<Integer>();
+//			 for (int j = 0; j < requestNo; j++) {
+//			 reqs.add(miniScan2.nextInt());
+//			 }
+//			 customers.add(new Chromosome(custProf, requestNo, reqs));
+//			 } else {
+//			 scanner.nextLine();
+//			 }
+//			 i++;
+//			 }
 			// =====================================================================================
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// working out score
+		// working out score and total budget
+		int cost = 0;
+		 System.out.println(requirements);
 		for (int l = 0; l < requirements.size(); l++) {
+
+			cost += requirements.get(l);
 			double score = 0.0;
 			for (int m = 0; m < customers.size(); m++) {
-				double customerValue = ((double) customers.get(m).getCustomerProfit() / (double) customers.size());
+				double customerValue = ((double) customers.get(m).getCustomerProfit() / (double) totalProfit);
 				int customerReqValue = 0;
 				if (customers.get(m).getCustomerRequirements().contains(l)) {
 					customerReqValue = customers.get(m).getCustomerRequirements().size()
@@ -131,6 +125,14 @@ public class Reader {
 			}
 			scores.add(score);
 		}
+		System.out.println("Total cost" + cost);
+		budget = (double) cost * 0.4;
+		System.out.println("budget" +budget);
+
+	}
+
+	public double getBudget() {
+		return budget;
 
 	}
 
@@ -140,6 +142,7 @@ public class Reader {
 	}
 
 	public double getScore(int position) {
+		// System.out.println(scores.get(position));
 		return scores.get(position);
 	}
 
